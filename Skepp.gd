@@ -33,6 +33,18 @@ func get_input():
         rotation_dir += 1
     if Input.is_action_pressed("thrust"):
         apply_force(Vector2(speed, 0).rotated(rotation))
+        
+func wrap_around():
+    var size : Vector2 = get_viewport().size
+    if position.x > size.x:
+        position.x = 0
+    if position.y > size.y:
+        position.y = 0
+    if position.x < 0:
+        position.x = size.x
+    if position.y < 0:
+        position.y = size.y
+    
     
 func _physics_process(delta):
     
@@ -44,5 +56,7 @@ func _physics_process(delta):
     velocity += acceleration
     velocity = velocity.clamped(max_speed)
     var collision_info = move_and_collide(velocity * delta)
+    
+    wrap_around()
     
     acceleration *= 0
