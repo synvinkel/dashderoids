@@ -16,12 +16,17 @@ _global_script_class_icons={
 [application]
 
 config/name="Leap"
+run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Cols="*res://Cols.gd"
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/width=1920
+window/size/height=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Skepp.gd" type="Script" id=1]
+
+[node name="Skepp" type="KinematicBody2D"]
+position = Vector2( 683.896, 409.634 )
+script = ExtResource( 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 0, 0 )
