@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Cols="*res://Cols.gd"
+G="*res://Geometry.gd"
 
 [display]
 
@@ -52,6 +53,11 @@ boost={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[physics]
+
+2d/default_gravity=0
+2d/default_gravity_vector=Vector2( 0, 0 )
 
 [rendering]
 
