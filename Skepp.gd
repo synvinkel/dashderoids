@@ -9,8 +9,13 @@ var rotation_speed : float = 3.0
 var speed : int = 10
 var max_speed : int = 200
 
+var shape : Array = [Vector2(-20, -20), Vector2(30, 0), Vector2(-20, 20)]
+
 func _ready():
-    pass
+    $CollisionPolygon2D.polygon = shape
+
+func _draw():
+    draw_polygon(shape, [Cols.pink])
     
 func apply_force(force : Vector2):
     force = force / mass
