@@ -8,14 +8,21 @@ var rotation_dir : int = 0
 var rotation_speed : float = 3.0
 var speed : int = 10
 var max_speed : int = 200
+var boosting : bool = false
+var boost_mag : float = 1.0
+var boost_len : int = 300
+var time_scale : float = 1.0
 
 var shape : Array = [Vector2(-20, -20), Vector2(30, 0), Vector2(-20, 20)]
 
 func _ready():
     $CollisionPolygon2D.polygon = shape
+    update()
 
 func _draw():
     draw_polygon(shape, [Cols.pink])
+    if boosting:
+        draw_line(Vector2(), Vector2(boost_len * boost_mag, 0), Cols.blue)
     
 func apply_force(force : Vector2):
     force = force / mass
@@ -38,6 +45,14 @@ func get_input():
         rotation_dir += 1
     if Input.is_action_pressed("thrust"):
         apply_force(Vector2(speed, 0).rotated(rotation))
+    if Input.is_action_just_pressed("boost"):
+        boosting = true
+        time_scale = 0.5
+    if Input.is_action_just_released("boost"):
+        position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
+        boosting = false
+        time_scale = 1.0
+        
         
 func wrap_around():
     var size : Vector2 = get_viewport().size
@@ -60,8 +75,9 @@ func _physics_process(delta):
     
     velocity += acceleration
     velocity = velocity.clamped(max_speed)
-    var collision_info = move_and_collide(velocity * delta)
+    var collision_info = move_and_collide(velocity * delta * time_scale)
+    acceleration *= 0
     
     wrap_around()
+    update()
     
-    acceleration *= 0

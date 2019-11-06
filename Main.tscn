@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Background.gd" type="Script" id=2]
-[ext_resource path="res://Skepp.gd" type="Script" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Skepp.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -21,14 +20,4 @@ margin_right = -1.89075
 margin_bottom = 3.78149
 color = Color( 0.831373, 0.996078, 0.917647, 1 )
 
-[node name="Skepp" type="KinematicBody2D" parent="."]
-position = Vector2( 683.896, 409.634 )
-script = ExtResource( 3 )
-
-[node name="Sprite" type="Sprite" parent="Skepp"]
-visible = false
-position = Vector2( 0, 0.365662 )
-texture = ExtResource( 4 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Skepp"]
-polygon = PoolVector2Array( 0, 0 )
+[node name="Skepp" parent="." instance=ExtResource( 3 )]
