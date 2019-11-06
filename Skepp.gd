@@ -8,7 +8,10 @@ var rotation_dir : int = 0
 var rotation_speed : float = 3.0
 var speed : int = 10
 var max_speed : int = 200
+
 var boosting : bool = false
+var thrusting : bool = false
+
 var boost_mag : float = 1.0
 var boost_len : int = 300
 var time_scale : float = 1.0
@@ -22,7 +25,7 @@ func _ready():
 func _draw():
     draw_polygon(shape, [Cols.pink])
     if boosting:
-        draw_line(Vector2(), Vector2(boost_len * boost_mag, 0), Cols.blue)
+        draw_line(Vector2(), Vector2(boost_len * boost_mag, 0), Cols.blue, 2.0, true)
     
 func apply_force(force : Vector2):
     force = force / mass
@@ -44,7 +47,10 @@ func get_input():
     if Input.is_action_pressed("turn_right"):
         rotation_dir += 1
     if Input.is_action_pressed("thrust"):
+        thrusting = true
         apply_force(Vector2(speed, 0).rotated(rotation))
+    else:
+        thrusting = false
     if Input.is_action_just_pressed("boost"):
         boosting = true
         time_scale = 0.5
