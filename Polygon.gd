@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 export var debug = false
-#onready var line = $"../Line2D"
+onready var skepp = $"../Skepp"
 onready var polygon = $Polygon2D
 onready var collision_polygon = $CollisionPolygon2D
 var Polygon = load("res://Polygon.tscn") 
@@ -33,6 +33,9 @@ func set_new_polygon(_new_poly):
     sync_polygon_and_collision()
     
 func _ready():
+    if skepp:
+        skepp.connect("boost", self, "_on_Skepp_boost")
+        skepp.connect("boosted", self, "split")
     if(new_poly != []):
         set_new_polygon(new_poly)
     else:
@@ -68,10 +71,6 @@ func split() -> void:
         rhs.init(rhs_poly, position, linear_velocity, rand_range(-10.0, 10.0), debug)
         get_parent().add_child(rhs)
         queue_free()
-        
-#func _process(delta):
-#    if Input.is_action_just_pressed("ui_down"):
-#        split()
 
         
 func _physics_process(delta):

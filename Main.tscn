@@ -25,5 +25,3 @@ color = Color( 0.831373, 0.996078, 0.917647, 1 )
 
 [node name="Polygon" parent="." instance=ExtResource( 4 )]
 debug = true
-[connection signal="boost" from="Skepp" to="Polygon" method="_on_Skepp_boost"]
-[connection signal="boosted" from="Skepp" to="Polygon" method="split"]
