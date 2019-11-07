@@ -6,5 +6,14 @@
 position = Vector2( 683.896, 409.634 )
 script = ExtResource( 1 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="CollisionPolygon" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( 0, 0 )
+
+[node name="BoostLine" type="Line2D" parent="."]
+texture_mode = 3080292
+
+[node name="CoolOff" type="Timer" parent="BoostLine"]
+one_shot = true
+
+[node name="Tween" type="Tween" parent="BoostLine"]
+[connection signal="timeout" from="BoostLine/CoolOff" to="." method="_on_CoolOff_timeout"]
