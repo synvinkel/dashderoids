@@ -18,6 +18,9 @@ var boost_cool : bool = true
 
 var shape : Array = [Vector2(-20, -20), Vector2(30, 0), Vector2(-20, 20)]
 
+signal boost(line)
+signal boosted
+
 func _ready() -> void:
     $CollisionPolygon.polygon = shape
     update()
@@ -60,6 +63,7 @@ func get_input() -> void:
         boost_mag = 0
         boosting = false
         $BoostLine/CoolOff.start()
+        emit_signal("boosted")
         
 func wrap_around() -> void:
     var size : Vector2 = get_viewport().size
@@ -81,8 +85,9 @@ func _physics_process(delta) -> void:
     apply_friction()
     
     if boosting:
-        var t = get_global_transform()
-        $BoostLine.points = [t.xform_inv(position), Vector2(boost_len * boost_mag, 0)]
+        $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
+        print(global_position)
+        emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
         $BoostLine.visible = true
     else:
         $BoostLine.visible = false

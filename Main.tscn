@@ -9,7 +9,6 @@
 script = ExtResource( 1 )
 
 [node name="Background" type="CanvasLayer" parent="."]
-editor/display_folded = true
 layer = -1
 script = ExtResource( 2 )
 
@@ -25,9 +24,6 @@ color = Color( 0.831373, 0.996078, 0.917647, 1 )
 [node name="Skepp" parent="." instance=ExtResource( 3 )]
 
 [node name="Polygon" parent="." instance=ExtResource( 4 )]
-
-[node name="Line2D" type="Line2D" parent="."]
-position = Vector2( 124.964, 122.692 )
-points = PoolVector2Array( 161.098, 237.083, 381.489, 427.938 )
-default_color = Color( 0.4, 0.501961, 1, 1 )
-texture_mode = 3080292
+debug = true
+[connection signal="boost" from="Skepp" to="Polygon" method="_on_Skepp_boost"]
+[connection signal="boosted" from="Skepp" to="Polygon" method="split"]

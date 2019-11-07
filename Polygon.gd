@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 export var debug = false
-onready var line = $"../Line2D"
+#onready var line = $"../Line2D"
 onready var polygon = $Polygon2D
 onready var collision_polygon = $CollisionPolygon2D
 var Polygon = load("res://Polygon.tscn") 
@@ -11,6 +11,8 @@ var rhs_poly = []
 
 var poly_label = Label.new()
 var poly_font = poly_label.get_font("")
+
+var line = []
 
 var new_poly = []
 
@@ -56,51 +58,59 @@ func _draw():
         for i in rhs_poly.size():
             draw_line(rhs_poly[i],rhs_poly[((i + 1) % rhs_poly.size() )], Color.blue, 3.0)
             draw_string(poly_font, rhs_poly[i], str(i), Color.black)
-     
-func _process(delta):
-    if Input.is_action_just_pressed("ui_down"):
-        if lhs_poly != [] and rhs_poly != []:
-            var lhs = Polygon.instance()
-            lhs.init(lhs_poly, position, -linear_velocity * 0.4, angular_velocity, debug)
-            get_parent().add_child(lhs)
-            var rhs = Polygon.instance()
-            rhs.init(rhs_poly, position, linear_velocity, rand_range(-10.0, 10.0), debug)
-            get_parent().add_child(rhs)
-            queue_free()
+
+func split() -> void:
+    if lhs_poly != [] and rhs_poly != []:
+        var lhs = Polygon.instance()
+        lhs.init(lhs_poly, position, -linear_velocity * 0.4, angular_velocity, debug)
+        get_parent().add_child(lhs)
+        var rhs = Polygon.instance()
+        rhs.init(rhs_poly, position, linear_velocity, rand_range(-10.0, 10.0), debug)
+        get_parent().add_child(rhs)
+        queue_free()
+        
+#func _process(delta):
+#    if Input.is_action_just_pressed("ui_down"):
+#        split()
+
         
 func _physics_process(delta):
     sync_polygon_and_collision()
     
-    # 2D plane
-    var dvec = (line.points[0] - line.points[1]).normalized()
-    var normal = Vector2(dvec.y, -dvec.x)
-    var N = normal
-    var D = normal.dot(line.points[0])
-                   
-    intersections.clear()            
-    lhs_poly.clear()
-    rhs_poly.clear()
-
-    var p = polygon.polygon
-    var t = polygon.get_global_transform_with_canvas()
-    var i = 0
-    for i in p.size():
-        var dist = N.dot(t.xform(p[i])) - D
-        if dist < 0:
-            lhs_poly.push_back(p[i])
-        else:
-            rhs_poly.push_back(p[i])
-            
-        var polygon_segment = [ t.xform(p[i]) , t.xform(p[((i + 1) % p.size() )]) ]
-        var intersection = G.intersect(polygon_segment, line.points)
-        if intersection:
-            lhs_poly.push_back(t.xform_inv(intersection))
-            rhs_poly.push_back(t.xform_inv(intersection))
-            intersections.push_back(t.xform_inv(intersection))
-            
- 
-    if intersections.size() != 2:
+    if line.size() == 2:
+        # 2D plane
+        var dvec = (line[0] - line[1]).normalized()
+        var normal = Vector2(dvec.y, -dvec.x)
+        var N = normal
+        var D = normal.dot(line[0])
+                       
+        intersections.clear()            
         lhs_poly.clear()
         rhs_poly.clear()
+    
+        var p = polygon.polygon
+        var t = polygon.get_global_transform_with_canvas()
+        var i = 0
+        for i in p.size():
+            var dist = N.dot(t.xform(p[i])) - D
+            if dist < 0:
+                lhs_poly.push_back(p[i])
+            else:
+                rhs_poly.push_back(p[i])
+                
+            var polygon_segment = [ t.xform(p[i]) , t.xform(p[((i + 1) % p.size() )]) ]
+            var intersection = G.intersect(polygon_segment, line)
+            if intersection:
+                lhs_poly.push_back(t.xform_inv(intersection))
+                rhs_poly.push_back(t.xform_inv(intersection))
+                intersections.push_back(t.xform_inv(intersection))
+                
+     
+        if intersections.size() != 2:
+            lhs_poly.clear()
+            rhs_poly.clear()
 
     update()
+
+func _on_Skepp_boost(_line):
+    line = _line
