@@ -40,6 +40,10 @@ func _ready():
         set_new_polygon(new_poly)
     else:
         sync_polygon_and_collision()
+    # Sync up position with centroid
+    var p_centroid = G.centroid(polygon.polygon)
+    for i in polygon.polygon.size():
+        polygon.polygon[i] -= p_centroid
     
 func _draw():
     if(debug):
@@ -48,8 +52,8 @@ func _draw():
         for i in p.size():
             draw_line(p[i],p[((i + 1) % p.size() )], Color.red)
         
-        var t = polygon.get_global_transform_with_canvas()    
-        draw_circle(t.xform_inv(position), 10, Color.pink)
+        draw_circle(Vector2(), 15, Color.pink)
+        draw_circle(G.centroid(p), 10, Color.green)
             
     #    draw intersection points
         for intersect in intersections:
@@ -64,11 +68,14 @@ func _draw():
 
 func split() -> void:
     if lhs_poly != [] and rhs_poly != []:
+        var lhs_centroid = G.centroid(lhs_poly)
+        var rhs_centroid = G.centroid(rhs_poly)
+        
         var lhs = Polygon.instance()
-        lhs.init(lhs_poly, position, -linear_velocity * 0.4, angular_velocity, debug)
+        lhs.init(lhs_poly, position + lhs_centroid, linear_velocity, angular_velocity, debug)
         get_parent().add_child(lhs)
         var rhs = Polygon.instance()
-        rhs.init(rhs_poly, position, linear_velocity, rand_range(-10.0, 10.0), debug)
+        rhs.init(rhs_poly, position + rhs_centroid, linear_velocity, angular_velocity, debug)
         get_parent().add_child(rhs)
         queue_free()
 
