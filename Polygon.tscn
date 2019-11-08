@@ -15,3 +15,22 @@ polygon = PoolVector2Array( 0, 0 )
 [node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color( 0.443137, 0.737255, 0.827451, 1 )
 polygon = PoolVector2Array( -48.1638, -56.8408, 42.6201, -48.4607, 55.8885, 20.6747, 27.2567, 56.2899, -68.4156, 34.6415 )
+
+[node name="SizeIndicator" type="Node" parent="."]
+
+[node name="Control" type="Node2D" parent="SizeIndicator"]
+visible = false
+
+[node name="Label" type="Label" parent="SizeIndicator/Control"]
+margin_left = 129.0
+margin_top = -138.0
+margin_right = 216.0
+margin_bottom = -118.0
+custom_colors/font_color = Color( 0.87451, 0.196078, 0.141176, 1 )
+text = "label"
+
+[node name="Line2D" type="Line2D" parent="SizeIndicator/Control"]
+points = PoolVector2Array( 0.720215, -0.275146, 120.834, -114.803, 222.094, -114.803 )
+width = 1.0
+default_color = Color( 0.87451, 0.196078, 0.141176, 1 )
+texture_mode = 3080292

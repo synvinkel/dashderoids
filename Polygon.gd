@@ -86,6 +86,8 @@ func split() -> void:
 func _physics_process(delta):
     sync_polygon_and_collision()
     
+    $SizeIndicator/Control.position = position
+    
     if line.size() == 2:
         # 2D plane
         var dvec = (line[0] - line[1]).normalized()
