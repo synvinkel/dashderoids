@@ -86,7 +86,6 @@ func _physics_process(delta) -> void:
     
     if boosting:
         $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
-        print(global_position)
         emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
         $BoostLine.visible = true
     else:
