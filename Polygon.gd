@@ -44,6 +44,7 @@ func _ready():
     var p_centroid = G.centroid(polygon.polygon)
     for i in polygon.polygon.size():
         polygon.polygon[i] -= p_centroid
+    mass = G.area(polygon.polygon)
     
 func _draw():
     if(debug):

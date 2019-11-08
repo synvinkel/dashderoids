@@ -37,3 +37,15 @@ func centroid(polygon : Array) -> Vector2:
         ySum += point[1]
         length += 1
     return Vector2(xSum / length, ySum / length)
+    
+# https://stackoverflow.com/a/24468019 
+# Shoelace formula
+func area(polygon : Array) -> int:
+    var n : int = polygon.size() # of corners
+    var area : float = 0.0
+    for i in range(n):
+        var j = (i + 1) % n
+        area += polygon[i][0] * polygon[j][1]
+        area -= polygon[j][0] * polygon[i][1]
+    area = abs(area) / 2.0
+    return int(area)
