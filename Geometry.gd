@@ -27,3 +27,13 @@ func intersect(coords1, coords2):
         var y = y1 + (uA * (y2 - y1))
         return Vector2(x, y)
     return null
+    
+func centroid(polygon : Array) -> Vector2:
+    var xSum : float = 0
+    var ySum : float = 0
+    var length : int = 0
+    for point in polygon:
+        xSum += point[0]
+        ySum += point[1]
+        length += 1
+    return Vector2(xSum / length, ySum / length)
