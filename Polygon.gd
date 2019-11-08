@@ -45,6 +45,8 @@ func _ready():
     for i in polygon.polygon.size():
         polygon.polygon[i] -= p_centroid
     mass = G.area(polygon.polygon)
+    if debug:
+        polygon.color.a = 0.1
     
 func _draw():
     if(debug):
