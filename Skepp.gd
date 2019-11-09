@@ -9,9 +9,6 @@ var rotation_speed : float = 3.0
 var speed : int = 10
 var max_speed : int = 200
 
-var thrusting : bool = false
-var boosting : bool = false
-
 export var boost_mag : float = 1.0
 var boost_len : int = 300
 var boost_cool : bool = true
@@ -20,6 +17,15 @@ var shape : Array = [Vector2(-20, -20), Vector2(30, 0), Vector2(-20, 20)]
 
 signal boost(line)
 signal boosted
+
+enum {
+    IDLE,
+    THRUSTING
+    BOOSTING,
+    BOOSTED
+}
+
+var state = IDLE
 
 func _ready() -> void:
     $CollisionPolygon.polygon = shape
@@ -40,30 +46,6 @@ func apply_friction() -> void:
     friction = friction.normalized()
     friction *= frictionMag
     apply_force(friction)
-
-func get_input() -> void:
-    rotation_dir = 0
-    if Input.is_action_pressed("turn_left"):
-        rotation_dir -= 1
-    if Input.is_action_pressed("turn_right"):
-        rotation_dir += 1
-    if Input.is_action_pressed("thrust"):
-        thrusting = true
-        apply_force(Vector2(speed, 0).rotated(rotation))
-    else:
-        thrusting = false
-    if Input.is_action_just_pressed("boost") and boost_cool:
-        boosting = true
-        boost_mag = 0        
-        $BoostLine/Tween.interpolate_property(self, "boost_mag", 0.0, 1.0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-        $BoostLine/Tween.start()
-    if Input.is_action_just_released("boost") and boosting:
-        boost_cool = false
-        position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
-        boost_mag = 0
-        boosting = false
-        $BoostLine/CoolOff.start()
-        emit_signal("boosted")
         
 func wrap_around() -> void:
     var size : Vector2 = get_viewport().size
@@ -75,31 +57,79 @@ func wrap_around() -> void:
         position.x = size.x
     if position.y < 0:
         position.y = size.y
-    
-    
+
+func enter_BOOSTING():
+    if boost_cool:
+       state = BOOSTING
+       boost_mag = 0        
+       $BoostLine/Tween.interpolate_property(self, "boost_mag", 0.0, 1.0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+       $BoostLine/Tween.start()
+
+func enter_THRUSTING():
+   state = THRUSTING 
+
+func get_input() -> void:
+    # State specifics
+    match state:
+        IDLE:
+            if Input.is_action_just_pressed("thrust"):
+                enter_THRUSTING()
+            if Input.is_action_just_pressed("boost"):
+                enter_BOOSTING()
+                
+        THRUSTING:
+            if Input.is_action_just_pressed("boost"):
+                enter_BOOSTING()
+            if Input.is_action_just_released("thrust"):
+                state = IDLE
+                
+        BOOSTING:
+            if Input.is_action_just_released("boost"):
+                state = BOOSTED
+            
+    # Common for all states
+    rotation_dir = 0
+    if Input.is_action_pressed("turn_left"):
+        rotation_dir -= 1
+    if Input.is_action_pressed("turn_right"):
+        rotation_dir += 1
+
+#
 func _physics_process(delta) -> void:
 
     get_input()
+    
+    match state:
+        IDLE:
+            pass
+            
+        THRUSTING:
+            apply_force(Vector2(speed, 0).rotated(rotation))
+            
+        BOOSTING:
+            $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
+            emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
+            $BoostLine.visible = true
+            
+        BOOSTED:
+            $BoostLine.visible = false
+            $BoostLine.points = []
+            boost_cool = false
+            position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
+            boost_mag = 0
+            $BoostLine/CoolOff.start()
+            emit_signal("boosted")
+            state = IDLE
+    
+    # Physics
     rotation += rotation_dir * rotation_speed * delta
-
     apply_friction()
-    
-    if boosting:
-        $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
-        emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
-        $BoostLine.visible = true
-    else:
-        $BoostLine.visible = false
-        $BoostLine.points = []
-        
-    
     velocity += acceleration
     velocity = velocity.clamped(max_speed)
     var collision_info = move_and_collide(velocity * delta)
     acceleration *= 0
     
     wrap_around()
-    update()
     
 
 func _on_CoolOff_timeout():
