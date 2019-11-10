@@ -24,3 +24,5 @@ color = Color( 0.831373, 0.996078, 0.917647, 1 )
 [node name="Skepp" parent="." instance=ExtResource( 3 )]
 
 [node name="Polygon" parent="." instance=ExtResource( 4 )]
+debug = true
+first = true

@@ -8,6 +8,7 @@ var Polygon = load("res://Polygon.tscn")
 var intersections = []
 var lhs_poly = []
 var rhs_poly = []
+export var first = false
 
 var poly_label = Label.new()
 var poly_font = poly_label.get_font("")
@@ -16,8 +17,9 @@ var line = []
 
 var new_poly = []
 
-func init(_new_poly, _new_pos, _new_vel, _new_angular, _debug):
+func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
     new_poly = _new_poly
+    rotation = _rotation
     position = _new_pos
     angular_velocity = _new_angular
     linear_velocity = _new_vel
@@ -41,9 +43,9 @@ func _ready():
     else:
         sync_polygon_and_collision()
     # Sync up position with centroid
-    var p_centroid = G.centroid(polygon.polygon)
-    for i in polygon.polygon.size():
-        polygon.polygon[i] -= p_centroid
+#    var p_centroid = G.centroid(polygon.polygon)
+#    for i in polygon.polygon.size():
+#        polygon.polygon[i] -= p_centroid
     mass = G.area(polygon.polygon)
     if debug:
         polygon.color.a = 0.1
@@ -74,11 +76,17 @@ func split() -> void:
         var lhs_centroid = G.centroid(lhs_poly)
         var rhs_centroid = G.centroid(rhs_poly)
         
+        for i in lhs_poly.size():
+            lhs_poly[i] -= lhs_centroid
+        
+        for i in rhs_poly.size():
+            rhs_poly[i] -= rhs_centroid
+        
         var lhs = Polygon.instance()
-        lhs.init(lhs_poly, position + lhs_centroid, linear_velocity, angular_velocity, debug)
+        lhs.init(lhs_poly, position + lhs_centroid, linear_velocity, angular_velocity, rotation, debug)
         get_parent().add_child(lhs)
         var rhs = Polygon.instance()
-        rhs.init(rhs_poly, position + rhs_centroid, linear_velocity, angular_velocity, debug)
+        rhs.init(rhs_poly, position + rhs_centroid, linear_velocity, angular_velocity, rotation, debug)
         get_parent().add_child(rhs)
         queue_free()
 
@@ -87,6 +95,9 @@ func _physics_process(delta):
     sync_polygon_and_collision()
     
     $SizeIndicator/Control.position = position
+    
+    if first:
+        angular_velocity = 0.2
     
     if line.size() == 2:
         # 2D plane
