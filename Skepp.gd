@@ -5,9 +5,9 @@ var acceleration : Vector2 = Vector2()
 var mass : float = 1.0
 var friction_coefficient : float = 1.0
 var rotation_dir : int = 0
-var rotation_speed : float = 3.0
-var speed : int = 10
-var max_speed : int = 200
+var rotation_speed : float = 4.0
+var speed : int = 20
+var max_speed : int = 400
 
 export var boost_mag : float = 1.0
 var boost_len : int = 300
