@@ -75,7 +75,7 @@ func split() -> void:
     if lhs_poly != [] and rhs_poly != []:
         var lhs_centroid = G.centroid(lhs_poly)
         var rhs_centroid = G.centroid(rhs_poly)
-        
+
         for i in lhs_poly.size():
             lhs_poly[i] -= lhs_centroid
         
@@ -83,10 +83,10 @@ func split() -> void:
             rhs_poly[i] -= rhs_centroid
         
         var lhs = Polygon.instance()
-        lhs.init(lhs_poly, position + lhs_centroid, linear_velocity, angular_velocity, rotation, debug)
+        lhs.init(lhs_poly, position + lhs_centroid.rotated(rotation), linear_velocity, angular_velocity, rotation, debug)
         get_parent().add_child(lhs)
         var rhs = Polygon.instance()
-        rhs.init(rhs_poly, position + rhs_centroid, linear_velocity, angular_velocity, rotation, debug)
+        rhs.init(rhs_poly, position + rhs_centroid.rotated(rotation), linear_velocity, angular_velocity, rotation, debug)
         get_parent().add_child(rhs)
         queue_free()
 
@@ -96,8 +96,8 @@ func _physics_process(delta):
     
     $SizeIndicator/Control.position = position
     
-    if first:
-        angular_velocity = 0.2
+   if first:
+       angular_velocity = 0.2
     
     if line.size() == 2:
         # 2D plane
