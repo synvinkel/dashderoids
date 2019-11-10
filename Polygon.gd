@@ -96,7 +96,7 @@ func _physics_process(delta):
     
     $SizeIndicator/Control.position = position
     
-   if first:
+    if first:
        angular_velocity = 0.2
     
     if line.size() == 2:
