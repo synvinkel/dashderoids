@@ -25,5 +25,4 @@ color = Color( 0.831373, 0.996078, 0.917647, 1 )
 
 [node name="Polygon" parent="." instance=ExtResource( 4 )]
 rotation = 0.785398
-debug = true
 first = true

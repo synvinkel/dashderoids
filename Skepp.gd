@@ -13,8 +13,6 @@ export var boost_mag : float = 1.0
 var boost_len : int = 300
 var boost_cool : bool = true
 
-var shape : Array = [Vector2(-20, -20), Vector2(30, 0), Vector2(-20, 20)]
-
 signal boost(line)
 signal boosted
 
@@ -28,12 +26,8 @@ enum {
 var state = IDLE
 
 func _ready() -> void:
-    $CollisionPolygon.polygon = shape
     update()
 
-func _draw() -> void:
-    draw_polygon(shape, [Cols.pink])
-    
 func apply_force(force : Vector2) -> void:
     force = force / mass
     acceleration += force
