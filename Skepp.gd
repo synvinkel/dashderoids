@@ -66,6 +66,7 @@ func enter_BOOSTING():
        $BoostLine/Tween.start()
 
 func enter_THRUSTING():
+   $Audio/Thrust.play()    
    state = THRUSTING 
 
 func get_input() -> void:
@@ -105,11 +106,13 @@ func _physics_process(delta) -> void:
             
         THRUSTING:
             apply_force(Vector2(speed, 0).rotated(rotation))
+            $Audio/Thrust.seek((velocity.length() / max_speed) * 4.0)
             
         BOOSTING:
             $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
             emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
             $BoostLine.visible = true
+    
             
         BOOSTED:
             $BoostLine.visible = false
@@ -118,6 +121,7 @@ func _physics_process(delta) -> void:
             position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
             boost_mag = 0
             $BoostLine/CoolOff.start()
+            $Audio/Boost.play()
             emit_signal("boosted")
             state = IDLE
     

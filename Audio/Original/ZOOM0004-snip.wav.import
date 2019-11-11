@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ZOOM0004-snip.wav-1d767b87676d3182f82576714c6e1fd6.sample"
+
+[deps]
+
+source_file="res://Audio/Original/ZOOM0004-snip.wav"
+dest_files=[ "res://.import/ZOOM0004-snip.wav-1d767b87676d3182f82576714c6e1fd6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

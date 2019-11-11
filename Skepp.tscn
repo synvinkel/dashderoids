@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Skepp.gd" type="Script" id=1]
+[ext_resource path="res://Audio/wubwub-02.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Audio/kohwshh-01.ogg" type="AudioStream" id=3]
 
 [node name="Skepp" type="KinematicBody2D"]
 position = Vector2( 683.896, 409.634 )
@@ -18,4 +20,12 @@ texture_mode = 3080292
 one_shot = true
 
 [node name="Tween" type="Tween" parent="BoostLine"]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Thrust" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 2 )
+
+[node name="Boost" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 3 )
 [connection signal="timeout" from="BoostLine/CoolOff" to="." method="_on_CoolOff_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/wubwub-02.ogg-18bab1f77f815ee4c380f3e51a239ad2.oggstr"
+
+[deps]
+
+source_file="res://Audio/wubwub-02.ogg"
+dest_files=[ "res://.import/wubwub-02.ogg-18bab1f77f815ee4c380f3e51a239ad2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
