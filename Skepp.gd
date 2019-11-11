@@ -7,7 +7,7 @@ var friction_coefficient : float = 1.0
 var rotation_dir : int = 0
 var rotation_speed : float = 4.0
 var speed : int = 20
-var max_speed : int = 400
+var max_speed : int = 800
 
 export var boost_mag : float = 1.0
 var boost_len : int = 300
@@ -73,16 +73,8 @@ func get_input() -> void:
     # State specifics
     match state:
         IDLE:
-            if Input.is_action_just_pressed("thrust"):
-                enter_THRUSTING()
             if Input.is_action_just_pressed("boost"):
                 enter_BOOSTING()
-                
-        THRUSTING:
-            if Input.is_action_just_pressed("boost"):
-                enter_BOOSTING()
-            if Input.is_action_just_released("thrust"):
-                state = IDLE
                 
         BOOSTING:
             if Input.is_action_just_released("boost"):
@@ -94,26 +86,26 @@ func get_input() -> void:
         rotation_dir -= 1
     if Input.is_action_pressed("turn_right"):
         rotation_dir += 1
+    if Input.is_action_pressed("thrust"):
+        apply_force(Vector2(speed, 0).rotated(rotation))
+    if Input.is_action_just_pressed("thrust"):
+        $Audio/Thrust/AnimationPlayer.play("fade_in")
+    if Input.is_action_just_released("thrust"):
+        $Audio/Thrust/AnimationPlayer.play("fade_out")
+        
+        
 
 #
 func _physics_process(delta) -> void:
 
     get_input()
     
-    match state:
-        IDLE:
-            pass
-            
-        THRUSTING:
-            apply_force(Vector2(speed, 0).rotated(rotation))
-            $Audio/Thrust.seek((velocity.length() / max_speed) * 4.0)
-            
+    match state:     
         BOOSTING:
             $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
             emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
             $BoostLine.visible = true
-    
-            
+                
         BOOSTED:
             $BoostLine.visible = false
             $BoostLine.points = []
