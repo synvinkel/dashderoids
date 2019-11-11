@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Polygon.gd" type="Script" id=1]
-[ext_resource path="res://Audio/dutt-02.ogg" type="AudioStream" id=2]
+[ext_resource path="res://polygon_texture.png" type="Texture" id=2]
+[ext_resource path="res://Audio/dutt-02.ogg" type="AudioStream" id=3]
 
-[sub_resource type="Animation" id=1]
-resource_name = "blink"
+[sub_resource type="Animation" id=3]
 length = 0.25
 loop = true
 step = 0.05
@@ -30,17 +30,16 @@ tracks/1/keys = {
 "clips": [ {
 "end_offset": 0.900239,
 "start_offset": 0.01,
-"stream": ExtResource( 2 )
+"stream": ExtResource( 3 )
 }, {
 "end_offset": 0.871443,
 "start_offset": 0.01,
-"stream": ExtResource( 2 )
+"stream": ExtResource( 3 )
 } ],
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "idle"
+[sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Polygon2D:modulate")
@@ -66,7 +65,8 @@ polygon = PoolVector2Array( 0, 0 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2( 0, 1.85065 )
-color = Color( 0.443137, 0.737255, 0.827451, 1 )
+antialiased = true
+texture = ExtResource( 2 )
 polygon = PoolVector2Array( -48.1638, -56.8408, 42.6201, -48.4607, 55.8885, 20.6747, 27.2567, 56.2899, -68.4156, 34.6415 )
 
 [node name="SizeIndicator" type="Node" parent="."]
@@ -90,14 +90,14 @@ texture_mode = 3080292
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/blink = SubResource( 1 )
-anims/idle = SubResource( 2 )
+anims/blink = SubResource( 3 )
+anims/idle = SubResource( 4 )
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
 
 [node name="Dutt" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
+stream = ExtResource( 3 )
 volume_db = -8.46
 [connection signal="timeout" from="DeathTimer" to="." method="kill"]

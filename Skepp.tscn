@@ -106,7 +106,6 @@ z_as_relative = false
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.898039, 0.447059, 0.607843, 1 )
 rotation = 1.5708
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 2 )
@@ -129,6 +128,7 @@ one_shot = true
 [node name="Tween" type="Tween" parent="BoostLine"]
 
 [node name="Audio" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Thrust" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource( 3 )
@@ -142,6 +142,7 @@ anims/fade_out = SubResource( 2 )
 stream = ExtResource( 4 )
 
 [node name="BoostTrail" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 5 )
 
 [node name="Line" type="Line2D" parent="BoostTrail"]
