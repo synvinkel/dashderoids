@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Skepp.gd" type="Script" id=1]
 [ext_resource path="res://skepp.png" type="Texture" id=2]
@@ -6,6 +6,34 @@
 [ext_resource path="res://Audio/kohwshh-01.ogg" type="AudioStream" id=4]
 [ext_resource path="res://BoostTrail.gd" type="Script" id=5]
 [ext_resource path="res://trail.png" type="Texture" id=6]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+uniform bool apply = true;
+uniform float amount = 0.0;
+uniform sampler2D offset_texture : hint_white;
+
+void fragment(){
+//    vec4 texture_color = texture(TEXTURE, UV);
+//    vec4 color = texture_color;
+//    if (apply) {
+//         float adjust_amount = amount * sin(TIME * 10.0) * 2.0 / 100.0;
+//        color.r = texture(TEXTURE, vec2(UV.x, UV.y + adjust_amount)).r;   
+//        color.g = texture(TEXTURE, vec2(UV.x, UV.y)).g;   
+//        color.b = texture(TEXTURE, vec2(UV.x, UV.y - adjust_amount)).b;   
+//    }
+//    COLOR = color;   
+}
+
+void vertex(){
+    VERTEX.y += cos(TIME * 100.0) * amount;
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/apply = true
+shader_param/amount = 0.0
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade_in"
@@ -106,19 +134,21 @@ z_as_relative = false
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 6 )
 rotation = 1.5708
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 2 )
 offset = Vector2( 6.73, 0 )
 
 [node name="CollisionPolygon" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PoolVector2Array( -33.3028, -25.5045, 47.8126, 0.418945, -34.139, 23.4156 )
 
 [node name="BoostLine" type="Line2D" parent="."]
 z_index = 1
 z_as_relative = false
 width = 3.0
-default_color = Color( 0.87451, 0.196078, 0.141176, 1 )
+default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1
 
 [node name="CoolOff" type="Timer" parent="BoostLine"]
@@ -142,12 +172,11 @@ anims/fade_out = SubResource( 2 )
 stream = ExtResource( 4 )
 
 [node name="BoostTrail" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 5 )
 
 [node name="Line" type="Line2D" parent="BoostTrail"]
-modulate = Color( 1, 0.117647, 0, 1 )
-default_color = Color( 1, 1, 1, 0 )
+modulate = Color( 0.87451, 0.196078, 0.141176, 1 )
+default_color = Color( 1, 1, 1, 0.25858 )
 texture = ExtResource( 6 )
 texture_mode = 2
 

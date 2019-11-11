@@ -9,7 +9,7 @@ var rotation_speed : float = 4.0
 var speed : int = 20
 var max_speed : int = 800
 
-export var boost_mag : float = 1.0
+export var boost_mag : float = 1.0 setget set_boost_mag
 var boost_len : int = 300
 var boost_cool : bool = true
 
@@ -23,10 +23,7 @@ enum {
     BOOSTED
 }
 
-var state = IDLE
-
-func _ready() -> void:
-    update()
+var state = IDLE    
 
 func apply_force(force : Vector2) -> void:
     force = force / mass
@@ -124,3 +121,6 @@ func _physics_process(delta) -> void:
 
 func _on_CoolOff_timeout():
     boost_cool = true
+    
+func set_boost_mag(value):
+    boost_mag = value
