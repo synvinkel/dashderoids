@@ -1,6 +1,59 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Polygon.gd" type="Script" id=1]
+[ext_resource path="res://Audio/dutt-02.ogg" type="AudioStream" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "blink"
+length = 0.25
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1.27456, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.87451, 0.196078, 0.141176, 1 ) ]
+}
+tracks/1/type = "audio"
+tracks/1/path = NodePath("Dutt")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"clips": [ {
+"end_offset": 0.900239,
+"start_offset": 0.01,
+"stream": ExtResource( 2 )
+}, {
+"end_offset": 0.871443,
+"start_offset": 0.01,
+"stream": ExtResource( 2 )
+} ],
+"times": PoolRealArray( 0, 0.1 )
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="Polygon" type="RigidBody2D"]
 position = Vector2( 770, 260 )
@@ -34,3 +87,17 @@ points = PoolVector2Array( 0.720215, -0.275146, 120.834, -114.803, 222.094, -114
 width = 1.0
 default_color = Color( 0.87451, 0.196078, 0.141176, 1 )
 texture_mode = 3080292
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/blink = SubResource( 1 )
+anims/idle = SubResource( 2 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="Dutt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -8.46
+[connection signal="timeout" from="DeathTimer" to="." method="kill"]

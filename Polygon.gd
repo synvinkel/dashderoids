@@ -47,8 +47,15 @@ func _ready():
 #    for i in polygon.polygon.size():
 #        polygon.polygon[i] -= p_centroid
     mass = G.area(polygon.polygon)
+    if mass < 4000:
+        $DeathTimer.start()
+        $Animation.play("blink")
+    
     if debug:
         polygon.color.a = 0.1
+
+func kill():
+    queue_free()
     
 func _draw():
     if(debug):

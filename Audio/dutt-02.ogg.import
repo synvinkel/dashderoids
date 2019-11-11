@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/dutt-02.ogg-92563675b46be51cd0bdc326dca17078.oggstr"
+
+[deps]
+
+source_file="res://Audio/dutt-02.ogg"
+dest_files=[ "res://.import/dutt-02.ogg-92563675b46be51cd0bdc326dca17078.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
