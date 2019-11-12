@@ -7,3 +7,10 @@ func _ready():
 func _process(delta):
     if Input.is_action_just_pressed("ui_cancel"):
         get_tree().reload_current_scene()
+        
+func quit_game():
+    get_tree().quit()
+    
+func start_game():
+    $StartScreen.visible = false
+    $Skepp.playing = true

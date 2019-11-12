@@ -9,6 +9,7 @@ var rotation_speed : float = 4.0
 var speed : int = 20
 var max_speed : int = 800
 
+export var playing : bool = false setget set_playing
 export var boost_mag : float = 1.0 setget set_boost_mag
 var boost_len : int = 300
 var boost_cool : bool = true
@@ -24,6 +25,10 @@ enum {
 }
 
 var state = IDLE    
+
+func set_playing(_playing):
+    playing = _playing
+    visible = true
 
 func apply_force(force : Vector2) -> void:
     force = force / mass
@@ -91,34 +96,35 @@ func get_input() -> void:
 #
 func _physics_process(delta) -> void:
 
-    get_input()
-    
-    match state:     
-        BOOSTING:
-            $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
-            emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
-            $BoostLine.visible = true
-                
-        BOOSTED:
-            $BoostLine.visible = false
-            $BoostLine.points = []
-            boost_cool = false
-            position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
-            boost_mag = 0
-            $BoostLine/CoolOff.start()
-            $Audio/Boost.play()
-            emit_signal("boosted")
-            state = IDLE
-    
-    # Physics
-    rotation += rotation_dir * rotation_speed * delta
-    apply_friction()
-    velocity += acceleration
-    velocity = velocity.clamped(max_speed)
-    var collision_info = move_and_collide(velocity * delta)
-    acceleration *= 0
-    
-    wrap_around()
+    if playing:
+        get_input()
+        
+        match state:     
+            BOOSTING:
+                $BoostLine.points = [Vector2(), Vector2(boost_len * boost_mag, 0)]
+                emit_signal("boost", [global_position, global_position + Vector2(boost_len * boost_mag, 0).rotated(rotation)])
+                $BoostLine.visible = true
+                    
+            BOOSTED:
+                $BoostLine.visible = false
+                $BoostLine.points = []
+                boost_cool = false
+                position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
+                boost_mag = 0
+                $BoostLine/CoolOff.start()
+                $Audio/Boost.play()
+                emit_signal("boosted")
+                state = IDLE
+        
+        # Physics
+        rotation += rotation_dir * rotation_speed * delta
+        apply_friction()
+        velocity += acceleration
+        velocity = velocity.clamped(max_speed)
+        var collision_info = move_and_collide(velocity * delta)
+        acceleration *= 0
+        
+        wrap_around()
     
 
 func _on_CoolOff_timeout():

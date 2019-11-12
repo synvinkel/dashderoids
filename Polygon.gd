@@ -17,6 +17,8 @@ var line = []
 
 var new_poly = []
 
+signal camera_shake_requested
+
 func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
     new_poly = _new_poly
     rotation = _rotation
@@ -35,6 +37,7 @@ func set_new_polygon(_new_poly):
     sync_polygon_and_collision()
     
 func _ready():
+    add_to_group("camera_shaker")
     if skepp:
         skepp.connect("boost", self, "_on_Skepp_boost")
         skepp.connect("boosted", self, "split")
@@ -95,6 +98,7 @@ func split() -> void:
         var rhs = Polygon.instance()
         rhs.init(rhs_poly, position + rhs_centroid.rotated(rotation), linear_velocity + rhs_centroid.rotated(rotation), angular_velocity, rotation, debug)
         get_parent().add_child(rhs)
+        emit_signal("camera_shake_requested")
         queue_free()
 
         
