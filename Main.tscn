@@ -19,11 +19,10 @@ margin_left = -1.89075
 margin_top = 3.78149
 margin_right = -1.89075
 margin_bottom = 3.78149
-color = Color( 0.831373, 0.996078, 0.917647, 1 )
+color = Color( 0.180392, 0.282353, 0.235294, 1 )
 
 [node name="Skepp" parent="." instance=ExtResource( 3 )]
 
 [node name="Polygon" parent="." instance=ExtResource( 4 )]
 rotation = 0.785398
-debug = true
 first = true

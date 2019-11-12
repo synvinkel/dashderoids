@@ -1,6 +1,58 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Polygon.gd" type="Script" id=1]
+[ext_resource path="res://polygon_texture.png" type="Texture" id=2]
+[ext_resource path="res://Audio/dutt-02.ogg" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=3]
+length = 0.25
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1.27456, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.87451, 0.196078, 0.141176, 1 ) ]
+}
+tracks/1/type = "audio"
+tracks/1/path = NodePath("Dutt")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"clips": [ {
+"end_offset": 0.900239,
+"start_offset": 0.01,
+"stream": ExtResource( 3 )
+}, {
+"end_offset": 0.871443,
+"start_offset": 0.01,
+"stream": ExtResource( 3 )
+} ],
+"times": PoolRealArray( 0, 0.1 )
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Polygon2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="Polygon" type="RigidBody2D"]
 position = Vector2( 770, 260 )
@@ -13,7 +65,8 @@ polygon = PoolVector2Array( 0, 0 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2( 0, 1.85065 )
-color = Color( 0.443137, 0.737255, 0.827451, 1 )
+antialiased = true
+texture = ExtResource( 2 )
 polygon = PoolVector2Array( -48.1638, -56.8408, 42.6201, -48.4607, 55.8885, 20.6747, 27.2567, 56.2899, -68.4156, 34.6415 )
 
 [node name="SizeIndicator" type="Node" parent="."]
@@ -34,3 +87,17 @@ points = PoolVector2Array( 0.720215, -0.275146, 120.834, -114.803, 222.094, -114
 width = 1.0
 default_color = Color( 0.87451, 0.196078, 0.141176, 1 )
 texture_mode = 3080292
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/blink = SubResource( 3 )
+anims/idle = SubResource( 4 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="Dutt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -8.46
+[connection signal="timeout" from="DeathTimer" to="." method="kill"]

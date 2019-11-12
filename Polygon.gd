@@ -47,8 +47,15 @@ func _ready():
 #    for i in polygon.polygon.size():
 #        polygon.polygon[i] -= p_centroid
     mass = G.area(polygon.polygon)
+    if mass < 4000:
+        $DeathTimer.start()
+        $Animation.play("blink")
+    
     if debug:
         polygon.color.a = 0.1
+
+func kill():
+    queue_free()
     
 func _draw():
     if(debug):
@@ -83,10 +90,10 @@ func split() -> void:
             rhs_poly[i] -= rhs_centroid
         
         var lhs = Polygon.instance()
-        lhs.init(lhs_poly, position + lhs_centroid.rotated(rotation), linear_velocity, angular_velocity, rotation, debug)
+        lhs.init(lhs_poly, position + lhs_centroid.rotated(rotation), linear_velocity + lhs_centroid.rotated(rotation), angular_velocity, rotation, debug)
         get_parent().add_child(lhs)
         var rhs = Polygon.instance()
-        rhs.init(rhs_poly, position + rhs_centroid.rotated(rotation), linear_velocity, angular_velocity, rotation, debug)
+        rhs.init(rhs_poly, position + rhs_centroid.rotated(rotation), linear_velocity + rhs_centroid.rotated(rotation), angular_velocity, rotation, debug)
         get_parent().add_child(rhs)
         queue_free()
 
