@@ -69,6 +69,8 @@ func get_input() -> void:
                 
         BOOSTING:
             if Input.is_action_just_released("boost"):
+                if boost_mag > 0.5:
+                    $Sprite/Anim.play("boosted")
                 state = BOOSTED
             
     # Common for all states
