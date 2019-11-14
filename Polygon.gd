@@ -18,6 +18,7 @@ var line = []
 var new_poly = []
 
 signal camera_shake_requested
+signal stone_split
 
 func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
     new_poly = _new_poly
@@ -99,10 +100,20 @@ func split() -> void:
         rhs.init(rhs_poly, position + rhs_centroid.rotated(rotation), linear_velocity + rhs_centroid.rotated(rotation), angular_velocity, rotation, debug)
         get_parent().add_child(rhs)
         emit_signal("camera_shake_requested")
+        emit_signal("stone_split")
         queue_free()
-
         
-func _physics_process(delta):
+func wrap_around(state) -> void:
+    var size : Vector2 = get_viewport().size
+    var xform = state.get_transform()
+    
+    xform.origin.x = wrapf(xform.origin.x, 0, size.x)
+    xform.origin.y = wrapf(xform.origin.y, 0, size.y)
+    
+    state.set_transform(xform)
+        
+func _integrate_forces(state):
+    wrap_around(state)
     sync_polygon_and_collision()
     
     $SizeIndicator/Control.position = position
@@ -122,7 +133,7 @@ func _physics_process(delta):
         rhs_poly.clear()
     
         var p = polygon.polygon
-        var t = polygon.get_global_transform_with_canvas()
+        var t = polygon.get_global_transform()
         var i = 0
         for i in p.size():
             var dist = N.dot(t.xform(p[i])) - D

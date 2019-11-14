@@ -4,7 +4,7 @@
 [ext_resource path="res://polygon_texture.png" type="Texture" id=2]
 [ext_resource path="res://Audio/dutt-02.ogg" type="AudioStream" id=3]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 length = 0.25
 loop = true
 step = 0.05
@@ -39,7 +39,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Polygon2D:modulate")
@@ -90,8 +90,8 @@ texture_mode = 3080292
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/blink = SubResource( 3 )
-anims/idle = SubResource( 4 )
+anims/blink = SubResource( 1 )
+anims/idle = SubResource( 2 )
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 0.6
