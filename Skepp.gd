@@ -45,14 +45,8 @@ func apply_friction() -> void:
         
 func wrap_around() -> void:
     var size : Vector2 = get_viewport().size
-    if position.x > size.x:
-        position.x = 0
-    if position.y > size.y:
-        position.y = 0
-    if position.x < 0:
-        position.x = size.x
-    if position.y < 0:
-        position.y = size.y
+    position.x = wrapf(position.x, 0, size.x)
+    position.y = wrapf(position.y, 0, size.y)
 
 func enter_BOOSTING():
     if boost_cool:
@@ -109,7 +103,7 @@ func _physics_process(delta) -> void:
                 $BoostLine.visible = false
                 $BoostLine.points = []
                 boost_cool = false
-                position += Vector2(boost_len * boost_mag, 0).rotated(rotation)
+                move_and_collide(Vector2(boost_len * boost_mag, 0).rotated(rotation))
                 boost_mag = 0
                 $BoostLine/CoolOff.start()
                 $Audio/Boost.play()
