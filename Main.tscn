@@ -9,13 +9,17 @@
 [ext_resource path="res://quit.png" type="Texture" id=7]
 
 [node name="Main" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )
 
-[node name="Background" type="CanvasLayer" parent="."]
+[node name="Game" type="Node" parent="."]
+pause_mode = 1
+
+[node name="Background" type="CanvasLayer" parent="Game"]
 layer = -1
 script = ExtResource( 2 )
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="ColorRect" type="ColorRect" parent="Game/Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.89075
@@ -24,20 +28,21 @@ margin_right = -1.89075
 margin_bottom = 3.78149
 color = Color( 0.180392, 0.282353, 0.235294, 1 )
 
-[node name="Skepp" parent="." instance=ExtResource( 3 )]
+[node name="Skepp" parent="Game" instance=ExtResource( 3 )]
 visible = false
 
-[node name="Polygon" parent="." groups=[
+[node name="Polygon" parent="Game" groups=[
 "camera_shaker",
 ] instance=ExtResource( 4 )]
 rotation = 0.785398
 first = true
 
-[node name="Camera" parent="." instance=ExtResource( 5 )]
+[node name="Camera" parent="Game" instance=ExtResource( 5 )]
 position = Vector2( 318.452, 107.604 )
 current = true
 
 [node name="StartScreen" type="MarginContainer" parent="."]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1920.0
