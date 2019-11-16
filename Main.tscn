@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://GUI.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Background.gd" type="Script" id=3]
+[ext_resource path="res://Background.gd" type="Script" id=2]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Skepp.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Polygon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=6]
@@ -16,12 +16,9 @@ script = ExtResource( 1 )
 [node name="Game" type="Node" parent="."]
 pause_mode = 1
 
-[node name="GUI" parent="Game" instance=ExtResource( 2 )]
-margin_bottom = 90.0
-
 [node name="Background" type="CanvasLayer" parent="Game"]
 layer = -1
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="Game/Background"]
 anchor_right = 1.0
@@ -31,6 +28,8 @@ margin_top = 3.78149
 margin_right = -1.89075
 margin_bottom = 3.78149
 color = Color( 0.180392, 0.282353, 0.235294, 1 )
+
+[node name="UI" parent="Game" instance=ExtResource( 3 )]
 
 [node name="Skepp" parent="Game" instance=ExtResource( 4 )]
 visible = false
