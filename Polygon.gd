@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 export var debug = false
+export var max_speed = 800
 onready var skepp = $"../Skepp"
 onready var polygon = $Polygon2D
 onready var collision_polygon = $CollisionPolygon2D
@@ -155,6 +156,7 @@ func _integrate_forces(state):
             rhs_poly.clear()
 
     update()
+    linear_velocity = linear_velocity.clamped(max_speed)
 
 func _on_Skepp_boost(_line):
     line = _line
