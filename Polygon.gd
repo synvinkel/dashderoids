@@ -20,6 +20,7 @@ var new_poly = []
 
 signal camera_shake_requested
 signal stone_split
+signal stone_broke(mass)
 
 func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
     new_poly = _new_poly
@@ -40,6 +41,7 @@ func set_new_polygon(_new_poly):
     
 func _ready():
     add_to_group("camera_shaker")
+    add_to_group("stones")
     if skepp:
         skepp.connect("boost", self, "_on_Skepp_boost")
         skepp.connect("boosted", self, "split")
@@ -60,6 +62,7 @@ func _ready():
         polygon.color.a = 0.1
 
 func kill():
+    emit_signal("stone_broke", mass)
     queue_free()
     
 func _draw():

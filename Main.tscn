@@ -44,6 +44,8 @@ first = true
 position = Vector2( 318.452, 107.604 )
 current = true
 
+[node name="Timer" type="Timer" parent="Game"]
+
 [node name="StartScreen" type="MarginContainer" parent="."]
 pause_mode = 2
 anchor_right = 1.0
@@ -77,5 +79,8 @@ margin_top = 462.0
 margin_right = 459.0
 margin_bottom = 692.0
 texture_normal = ExtResource( 8 )
+[connection signal="game_time_changed" from="." to="Game/UI" method="_on_Main_game_time_changed"]
+[connection signal="points_changed" from="." to="Game/UI" method="_on_Main_points_changed"]
+[connection signal="timeout" from="Game/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="StartScreen/HBoxContainer/VBoxContainer/Play" to="." method="start_game"]
 [connection signal="pressed" from="StartScreen/HBoxContainer/VBoxContainer/Quit" to="." method="quit_game"]

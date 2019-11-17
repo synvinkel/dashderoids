@@ -1,13 +1,20 @@
 extends CanvasLayer
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var TimeCounter = $TOP/HBoxContainer/TimeCounter
+onready var PointsCounter = $TOP/HBoxContainer/PointsCounter
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+    print(TimeCounter)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_Main_game_time_changed(time):
+    var minutes = str(floor(time / 60))
+    var seconds = str(time % 60)
+    if minutes.length() < 2:
+        minutes = "0" + minutes
+    if seconds.length() < 2:
+        seconds = "0" + seconds
+    TimeCounter.value = minutes + ":" + seconds
+
+
+func _on_Main_points_changed(points):
+    PointsCounter.value = str(points)

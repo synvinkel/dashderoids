@@ -1,6 +1,11 @@
 extends Node2D
 
 var game_started : bool = false
+var game_timer = 0 setget set_game_timer
+var points = 0 setget set_points
+
+signal game_time_changed(time)
+signal points_changed(points)
 
 func _ready():
     var v = get_viewport().size
@@ -28,5 +33,35 @@ func start_game():
         pause()
     else:
         game_started = true
+        connect_to_stones()
+        self.game_timer = 60
+        self.points = 0
+        $Game/Timer.start()
         $StartScreen.visible = false        
         $Game/Skepp.playing = true
+
+func set_game_timer(time):
+    game_timer = time
+    emit_signal("game_time_changed", game_timer)
+    if game_timer <= 0:
+        # TODO: Game Over
+        pass
+
+func _on_Timer_timeout():
+    self.game_timer -= 1
+    
+func set_points(_points):
+    points = _points
+    emit_signal("points_changed", points)
+    
+func connect_to_stones() -> void:
+    for stone in get_tree().get_nodes_in_group("stones"):
+        stone.connect("stone_split", self, "_on_stone_split")
+        stone.connect("stone_broke", self, "_on_stone_broke")
+        
+func _on_stone_split():
+    connect_to_stones()
+    
+func _on_stone_broke(mass):
+    self.points += mass
+

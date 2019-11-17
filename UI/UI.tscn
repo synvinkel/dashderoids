@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://UI/UI.gd" type="Script" id=1]
 [ext_resource path="res://UI/LifeCounter.tscn" type="PackedScene" id=2]
-[ext_resource path="res://UI/TimeCounter.tscn" type="PackedScene" id=3]
-[ext_resource path="res://UI/PointsCounter.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/CounterWithSprite.gd" type="Script" id=3]
+[ext_resource path="res://UI/TimeCounter.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/PointsCounter.tscn" type="PackedScene" id=5]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -23,12 +24,15 @@ margin_bottom = 70.0
 
 [node name="LifeCounter" parent="TOP/HBoxContainer" instance=ExtResource( 2 )]
 margin_right = 886.0
+script = ExtResource( 3 )
 
-[node name="TimeCounter" parent="TOP/HBoxContainer" instance=ExtResource( 3 )]
+[node name="TimeCounter" parent="TOP/HBoxContainer" instance=ExtResource( 4 )]
 margin_left = 890.0
 margin_right = 1776.0
+script = ExtResource( 3 )
 
-[node name="PointsCounter" parent="TOP/HBoxContainer" instance=ExtResource( 4 )]
+[node name="PointsCounter" parent="TOP/HBoxContainer" instance=ExtResource( 5 )]
 margin_left = 1780.0
 margin_right = 1880.0
 size_flags_horizontal = 1
+script = ExtResource( 3 )
