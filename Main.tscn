@@ -32,7 +32,6 @@ color = Color( 0.180392, 0.282353, 0.235294, 1 )
 [node name="UI" parent="Game" instance=ExtResource( 3 )]
 
 [node name="Skepp" parent="Game" instance=ExtResource( 4 )]
-visible = false
 
 [node name="Polygon" parent="Game" groups=[
 "camera_shaker",

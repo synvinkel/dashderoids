@@ -38,7 +38,6 @@ func start_game():
         self.points = 0
         $Game/Timer.start()
         $StartScreen.visible = false        
-        $Game/Skepp.playing = true
 
 func set_game_timer(time):
     game_timer = time
