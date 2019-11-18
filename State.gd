@@ -50,6 +50,7 @@ class SkeppBoosting extends SkeppBaseState:
             if skepp.boost_mag > 0.5:
                 skepp.play_animation("boosted")
             skepp.state = States.SkeppIdle.new()
+            return
 
         skepp.boost_line.points = [Vector2(), Vector2(skepp.boost_len * skepp.boost_mag, 0)]
         skepp.emit_signal("boost", [skepp.global_position, skepp.global_position + Vector2(skepp.boost_len * skepp.boost_mag, 0).rotated(skepp.rotation)])

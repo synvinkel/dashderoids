@@ -228,7 +228,6 @@ polygon = PoolVector2Array( -33.3028, -25.5045, 47.8126, 0.418945, -34.139, 23.4
 [node name="BoostLine" type="Line2D" parent="."]
 z_index = 1
 z_as_relative = false
-width = 3.0
 default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 3 )
 texture_mode = 2
@@ -258,10 +257,7 @@ script = ExtResource( 6 )
 
 [node name="Line" type="Line2D" parent="BoostTrail"]
 modulate = Color( 0.87451, 0.196078, 0.141176, 1 )
-position = Vector2( -834.854, -34.1531 )
-z_index = 1
-points = PoolVector2Array( 1274.06, 543.331, 1657.3, 263.049 )
-default_color = Color( 1, 1, 1, 0 )
+default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 3 )
 texture_mode = 2
 
