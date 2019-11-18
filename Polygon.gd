@@ -22,6 +22,8 @@ signal camera_shake_requested
 signal stone_split
 signal stone_broke(mass)
 
+var alive = true
+
 func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
     new_poly = _new_poly
     rotation = _rotation
@@ -62,8 +64,9 @@ func _ready():
         polygon.color.a = 0.1
 
 func kill():
-    emit_signal("stone_broke", mass)
+    alive = false
     queue_free()
+    emit_signal("stone_broke", mass)
     
 func _draw():
     if(debug):

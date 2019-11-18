@@ -43,7 +43,7 @@ func set_game_timer(time):
     game_timer = time
     emit_signal("game_time_changed", game_timer)
     if game_timer <= 0:
-        # TODO: Game Over
+        get_tree().reload_current_scene()
         pass
 
 func _on_Timer_timeout():
@@ -62,5 +62,12 @@ func _on_stone_split():
     connect_to_stones()
     
 func _on_stone_broke(mass):
-    self.points += mass
+    self.points += int(mass + mass * (game_timer * game_timer) * 0.001)
+    var stones_alive = 0
+    for stone in get_tree().get_nodes_in_group("stones"):
+        if stone.alive:
+            stones_alive += 1
+    if stones_alive == 0:
+        print(self.points)
+        get_tree().reload_current_scene()
 
