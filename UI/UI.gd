@@ -6,7 +6,7 @@ onready var PointsCounter = $TOP/HBoxContainer/PointsCounter
 func _ready():
     print(TimeCounter)
 
-func _on_Main_game_time_changed(time):
+func _on_Main_game_seconds_changed(time):
     var minutes = str(floor(time / 60))
     var seconds = str(time % 60)
     if minutes.length() < 2:
