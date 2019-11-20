@@ -22,26 +22,36 @@ class GameState:
 
 class TitleScreen extends GameState:
     func enter(entity):
-        print("entering titlescreen")
         var v = entity.get_viewport().size
         for stone in entity.get_tree().get_nodes_in_group("stones"):
-        	stone.position = Vector2(v.x / 2, v.y /2)
-        pass
+            stone.position = Vector2(v.x / 2, v.y /2)
+        entity.get_node("StartScreen").visible = true
+        entity.get_node("Game/UI").visible = false
     func update(entity, delta):
         pass
     func exit(entity):
         pass
 
-class Playing extends GameState:
+class NewGame extends GameState:
     func enter(entity):
         entity.connect_to_stones()
         entity.game_seconds = 60
         entity.points = 0
         entity.game_timer.start()
-        entity.start_screen.visible = false     
-	
-    func update(entity, delta):
+        entity.get_node("StartScreen").visible = false
+        entity.state = Playing.new()
+        entity.get_node("Game/UI").visible = true
+
+
+class Playing extends GameState:
+    func enter(entity):
         pass
+    
+    func update(entity, delta):
+        if Input.is_action_just_pressed("ui_cancel"):
+            entity.pause()
+        if Input.is_action_just_pressed("restart"):
+            entity.get_tree().reload_current_scene()
     func exit(entity):
         pass
 
@@ -68,32 +78,24 @@ class Lost extends GameState:
         pass
     func exit(entity):
         pass
-		
+        
 func _ready():
-	self.state = TitleScreen.new()
+    self.state = TitleScreen.new()
 
 func pause() -> void:
     if get_tree().paused:
         get_tree().paused = false
-        $StartScreen.visible = false
     else:
         get_tree().paused = true
-        $StartScreen.visible = true
     
 func _process(delta):
-	state.update(self, delta)
-#    if game_started and Input.is_action_just_pressed("ui_cancel"):
-#        pause()
-#    if Input.is_action_just_pressed("restart"):
-#        get_tree().reload_current_scene()
+    state.update(self, delta)
         
 func quit_game():
     get_tree().quit()
     
 func start_game():
-	self.state = Playing.new()
-#    if game_started:
-#        pause()   
+    self.state = NewGame.new()
 
 func set_game_seconds(seconds):
     game_seconds = seconds
