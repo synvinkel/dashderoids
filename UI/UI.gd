@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 onready var TimeCounter = $TOP/HBoxContainer/TimeCounter
 onready var PointsCounter = $TOP/HBoxContainer/PointsCounter
