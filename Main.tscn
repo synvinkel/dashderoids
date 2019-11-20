@@ -47,7 +47,6 @@ current = true
 
 [node name="StartScreen" type="MarginContainer" parent="."]
 pause_mode = 2
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1920.0

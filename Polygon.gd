@@ -6,10 +6,12 @@ onready var skepp = $"../Skepp"
 onready var polygon = $Polygon2D
 onready var collision_polygon = $CollisionPolygon2D
 var Polygon = load("res://Polygon.tscn") 
+var SplitExplosion = load("res://SplitExplosion.tscn") 
 var intersections = []
 var lhs_poly = []
 var rhs_poly = []
 export var first = false
+var last_intersection = null
 
 var poly_label = Label.new()
 var poly_font = poly_label.get_font("")
@@ -108,6 +110,9 @@ func split() -> void:
         get_parent().add_child(rhs)
         emit_signal("camera_shake_requested")
         emit_signal("stone_split")
+        var explosion = SplitExplosion.instance()
+        explosion.init(last_intersection)
+        get_parent().add_child(explosion)
         queue_free()
         
 func wrap_around(state) -> void:
@@ -152,6 +157,7 @@ func _integrate_forces(state):
             var polygon_segment = [ t.xform(p[i]) , t.xform(p[((i + 1) % p.size() )]) ]
             var intersection = G.intersect(polygon_segment, line)
             if intersection:
+                last_intersection = intersection
                 lhs_poly.push_back(t.xform_inv(intersection))
                 rhs_poly.push_back(t.xform_inv(intersection))
                 intersections.push_back(t.xform_inv(intersection))
