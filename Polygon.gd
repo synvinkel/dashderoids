@@ -112,6 +112,7 @@ func split() -> void:
         emit_signal("stone_split")
         var explosion = SplitExplosion.instance()
         explosion.init(last_intersection)
+        explosion.linear_velocity = linear_velocity
         get_parent().add_child(explosion)
         queue_free()
         

@@ -17,7 +17,6 @@ spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 124.95
 initial_velocity_random = 0.69
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 720.0
@@ -26,7 +25,7 @@ scale = 2.0
 scale_random = 1.0
 color_ramp = SubResource( 2 )
 
-[node name="SplitExplosion" type="Node2D"]
+[node name="SplitExplosion" type="RigidBody2D"]
 script = ExtResource( 1 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
