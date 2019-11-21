@@ -17,7 +17,7 @@ class SkeppBaseState extends State:
         if Input.is_action_pressed("turn_right"):
             rotation_dir += 1
         if Input.is_action_pressed("thrust"):
-            skepp.apply_force(Vector2(skepp.speed, 0).rotated(skepp.rotation))
+            skepp.apply_force(Vector2(skepp.speed, 0).rotated(skepp.rotation))            
         if Input.is_action_just_pressed("thrust"):
             skepp.thrust_audio.play("fade_in")
         if Input.is_action_just_released("thrust"):
@@ -30,6 +30,10 @@ class SkeppBaseState extends State:
         skepp.velocity = skepp.velocity.clamped(skepp.max_speed)
         var collision_info = skepp.move_and_collide(skepp.velocity * delta)
         skepp.acceleration *= 0
+        var space = skepp.get_node("../Space/Particles2D")        
+        space.process_material.gravity.x = skepp.velocity.x * -1
+        space.process_material.gravity.y = skepp.velocity.y * -1
+        
         
         skepp.wrap_around()
 

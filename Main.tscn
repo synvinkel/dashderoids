@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Background.gd" type="Script" id=2]
 [ext_resource path="res://Skepp.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Polygon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=6]
-[ext_resource path="res://play.png" type="Texture" id=7]
-[ext_resource path="res://quit.png" type="Texture" id=8]
+[ext_resource path="res://Space.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=7]
+[ext_resource path="res://play.png" type="Texture" id=8]
+[ext_resource path="res://quit.png" type="Texture" id=9]
 
 [node name="Main" type="Node2D"]
 pause_mode = 2
@@ -39,7 +40,9 @@ color = Color( 0.180392, 0.282353, 0.235294, 1 )
 rotation = 0.785398
 first = true
 
-[node name="Camera" parent="Game" instance=ExtResource( 6 )]
+[node name="Space" parent="Game" instance=ExtResource( 6 )]
+
+[node name="Camera" parent="Game" instance=ExtResource( 7 )]
 position = Vector2( 318.452, 107.604 )
 current = true
 
@@ -71,13 +74,13 @@ alignment = 1
 margin_top = 228.0
 margin_right = 459.0
 margin_bottom = 458.0
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 
 [node name="Quit" type="TextureButton" parent="StartScreen/HBoxContainer/VBoxContainer"]
 margin_top = 462.0
 margin_right = 459.0
 margin_bottom = 692.0
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 9 )
 [connection signal="game_seconds_changed" from="." to="Game/UI" method="_on_Main_game_seconds_changed"]
 [connection signal="points_changed" from="." to="Game/UI" method="_on_Main_points_changed"]
 [connection signal="timeout" from="Game/Timer" to="." method="_on_Timer_timeout"]
