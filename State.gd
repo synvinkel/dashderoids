@@ -30,10 +30,6 @@ class SkeppBaseState extends State:
         skepp.velocity = skepp.velocity.clamped(skepp.max_speed)
         var collision_info = skepp.move_and_collide(skepp.velocity * delta)
         skepp.acceleration *= 0
-        var space = skepp.get_node("../Space/Particles2D")        
-        space.process_material.gravity.x = skepp.velocity.x * -1
-        space.process_material.gravity.y = skepp.velocity.y * -1
-        
         
         skepp.wrap_around()
 
