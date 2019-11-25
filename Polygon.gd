@@ -37,6 +37,8 @@ func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
 func sync_polygon_and_collision():
     collision_polygon.position = polygon.position
     collision_polygon.polygon = polygon.polygon
+    $Area2D/CollisionPolygon2D.position = polygon.position
+    $Area2D/CollisionPolygon2D.polygon = polygon.polygon
     update()
 
 func set_new_polygon(_new_poly):

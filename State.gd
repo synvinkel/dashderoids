@@ -52,9 +52,14 @@ class SkeppBoosting extends SkeppBaseState:
             skepp.state = States.SkeppIdle.new()
             return
 
-        skepp.boost_line.points = [Vector2(), Vector2(skepp.boost_len * skepp.boost_mag, 0)]
+        skepp.get_node("Area2D").position = skepp.get_boost_point()
+        skepp.boost_line.points = [Vector2(), skepp.get_boost_point()]
         skepp.emit_signal("boost", [skepp.global_position, skepp.global_position + Vector2(skepp.boost_len * skepp.boost_mag, 0).rotated(skepp.rotation)])
         skepp.boost_line.visible = true
+        var bodies = skepp.get_node("Area2D").get_overlapping_areas()
+        for body in bodies:
+            print("overlapping")
+            print(body) 
         .update(skepp, delta)
 
     func exit(skepp):
@@ -66,3 +71,6 @@ class SkeppBoosting extends SkeppBaseState:
         skepp.boost_line_cooloff.start()
         skepp.boost_audio.play()
         skepp.emit_signal("boosted")
+
+#        skepp.get_node("Area2D").position = Vector2()
+        

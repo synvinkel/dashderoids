@@ -28,6 +28,9 @@ func apply_force(force : Vector2) -> void:
     force = force / mass
     acceleration += force
     
+func get_boost_point() -> Vector2:
+    return Vector2(boost_len * boost_mag, 0)
+    
 func apply_friction() -> void:
     var normal : float = 1.0
     var frictionMag : float = friction_coefficient * normal
@@ -59,3 +62,13 @@ func _set_state(new_state):
         state.exit(self)
     state = new_state
     new_state.enter(self)
+
+func _on_Area2D_area_entered(area):
+    print("area entered")
+    print(area)
+    pass # Replace with function body.
+
+
+func _on_Area2D_area_shape_entered(area_id, area, area_shape, self_shape):
+    print("area shape enterd")
+    pass # Replace with function body.
