@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Dummy/TestAreaEnter.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 22.5859, 31.7805 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 19.2075, 18.293 )
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 26.0737
+
+[node name="TestAreaEnter" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+position = Vector2( 599.085, 406.936 )
+
+[node name="Area2D" type="Area2D" parent="KinematicBody2D"]
+position = Vector2( 289.452, 52.364 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D/Area2D"]
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 1 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2( 887.149, 344.723 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource( 3 )
+[connection signal="body_entered" from="KinematicBody2D/Area2D" to="." method="_on_Area2D_body_entered"]
