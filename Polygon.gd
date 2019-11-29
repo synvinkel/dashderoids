@@ -6,6 +6,7 @@ onready var skepp = $"../Skepp"
 onready var polygon = $Polygon2D
 onready var collision_polygon = $CollisionPolygon2D
 var Polygon = load("res://Polygon.tscn") 
+var Coin = load("res://Coin.tscn") 
 var SplitExplosion = load("res://SplitExplosion.tscn") 
 var intersections = []
 var lhs_poly = []
@@ -13,10 +14,14 @@ var rhs_poly = []
 export var first = false
 var last_intersection = null
 
+signal coin_created(coin)
+
 var poly_label = Label.new()
 var poly_font = poly_label.get_font("")
 
 var line = []
+
+var dead = false
 
 var new_poly = []
 
@@ -37,8 +42,6 @@ func init(_new_poly, _new_pos, _new_vel, _new_angular, _rotation, _debug):
 func sync_polygon_and_collision():
     collision_polygon.position = polygon.position
     collision_polygon.polygon = polygon.polygon
-    $Area2D/CollisionPolygon2D.position = polygon.position
-    $Area2D/CollisionPolygon2D.polygon = polygon.polygon
     update()
 
 func set_new_polygon(_new_poly):
@@ -92,6 +95,10 @@ func _draw():
         for i in rhs_poly.size():
             draw_line(rhs_poly[i],rhs_poly[((i + 1) % rhs_poly.size() )], Color.blue, 3.0)
             draw_string(poly_font, rhs_poly[i], str(i), Color.black)
+            
+func _process(delta):
+    if dead:
+        queue_free()
 
 func split() -> void:
     if lhs_poly != [] and rhs_poly != []:
@@ -116,7 +123,12 @@ func split() -> void:
         explosion.init(last_intersection)
         explosion.linear_velocity = linear_velocity
         get_parent().add_child(explosion)
-        queue_free()
+        var coin = Coin.instance()
+        coin.position = position
+        get_parent().add_child(coin)
+        print("creating coin")
+        emit_signal("coin_created", coin)
+        dead = true
         
 func wrap_around(state) -> void:
     var size : Vector2 = get_viewport().size
@@ -172,6 +184,6 @@ func _integrate_forces(state):
 
     update()
     linear_velocity = linear_velocity.clamped(max_speed)
-
+    
 func _on_Skepp_boost(_line):
     line = _line

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Background.gd" type="Script" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://play.png" type="Texture" id=7]
 [ext_resource path="res://quit.png" type="Texture" id=8]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 49.6397
 
 [node name="Main" type="Node2D"]
 pause_mode = 2
@@ -78,8 +81,15 @@ margin_top = 462.0
 margin_right = 459.0
 margin_bottom = 692.0
 texture_normal = ExtResource( 8 )
+
+[node name="DeathZONE" type="Area2D" parent="."]
+position = Vector2( 979.489, 465.771 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZONE"]
+shape = SubResource( 1 )
 [connection signal="game_seconds_changed" from="." to="Game/UI" method="_on_Main_game_seconds_changed"]
 [connection signal="points_changed" from="." to="Game/UI" method="_on_Main_points_changed"]
 [connection signal="timeout" from="Game/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="StartScreen/HBoxContainer/VBoxContainer/Play" to="." method="start_game"]
 [connection signal="pressed" from="StartScreen/HBoxContainer/VBoxContainer/Quit" to="." method="quit_game"]
+[connection signal="body_entered" from="DeathZONE" to="." method="_on_DeathZONE_body_entered"]

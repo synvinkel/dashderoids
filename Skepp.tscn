@@ -266,13 +266,16 @@ autoplay = "idle"
 anims/fade_out = SubResource( 7 )
 anims/idle = SubResource( 8 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AreaHolder" type="Node" parent="."]
 
-[node name="CollisionPolygon2" type="CollisionPolygon2D" parent="Area2D"]
+[node name="Area2D" type="Area2D" parent="AreaHolder"]
+position = Vector2( 683.896, 409.634 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionPolygon2" type="CollisionPolygon2D" parent="AreaHolder/Area2D"]
 polygon = PoolVector2Array( -33.3028, -25.5045, 47.8126, 0.418945, -34.139, 23.4156 )
 [connection signal="boost" from="." to="BoostTrail" method="_on_Skepp_boost"]
 [connection signal="boosted" from="." to="BoostTrail" method="_on_Skepp_boosted"]
 [connection signal="timeout" from="BoostLine/CoolOff" to="." method="_on_CoolOff_timeout"]
 [connection signal="animation_finished" from="BoostTrail/Anim" to="BoostTrail" method="_on_Anim_fade_out_finished"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
-[connection signal="area_shape_entered" from="Area2D" to="." method="_on_Area2D_area_shape_entered"]

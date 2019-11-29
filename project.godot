@@ -27,8 +27,8 @@ States="*res://State.gd"
 
 [display]
 
-window/size/width=1920
-window/size/height=1080
+window/size/width=1520
+window/size/height=680
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 

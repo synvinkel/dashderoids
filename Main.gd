@@ -115,6 +115,7 @@ func connect_to_stones() -> void:
     for stone in get_tree().get_nodes_in_group("stones"):
         stone.connect("stone_split", self, "_on_stone_split")
         stone.connect("stone_broke", self, "_on_stone_broke")
+        stone.connect("coin_created", self, "_on_coin_created")
         
 func _on_stone_split():
     connect_to_stones()
@@ -128,6 +129,14 @@ func _on_stone_broke(mass):
     if stones_alive == 0:
         print(self.points)
         get_tree().reload_current_scene()
+        
+func _on_coin_created(coin):
+    print("connecting to coin")
+    coin.connect("coin_picked_up", self, "_on_coin_picked_up")
+
+func _on_coin_picked_up(coin):
+    print("picked up coin!")
+    coin.queue_free()
 
 func _set_state(new_state):
     if state != null:
@@ -135,3 +144,9 @@ func _set_state(new_state):
     state = new_state
     new_state.enter(self)
 
+
+
+func _on_DeathZONE_body_entered(body):
+    print("ETNERED THE DEATH ZONE!!")
+    print(body)
+    pass # Replace with function body.

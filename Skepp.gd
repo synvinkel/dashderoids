@@ -8,6 +8,8 @@ var rotation_speed : float = 4.0
 var speed : int = 20
 var max_speed : int = 800
 
+var deathzone = false
+
 export var boost_mag : float = 1.0 setget set_boost_mag
 var boost_len : int = 300
 var boost_cool : bool = true
@@ -62,13 +64,3 @@ func _set_state(new_state):
         state.exit(self)
     state = new_state
     new_state.enter(self)
-
-func _on_Area2D_area_entered(area):
-    print("area entered")
-    print(area)
-    pass # Replace with function body.
-
-
-func _on_Area2D_area_shape_entered(area_id, area, area_shape, self_shape):
-    print("area shape enterd")
-    pass # Replace with function body.
