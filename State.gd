@@ -52,17 +52,27 @@ class SkeppBoosting extends SkeppBaseState:
             skepp.state = States.SkeppIdle.new()
             return
 
-        skepp.get_node("Area2D").position = skepp.get_boost_point()
+        var t : Transform = skepp.get_global_transform()
+        skepp.get_node("AreaHolder/Area2D").position = t.xform(skepp.get_boost_point())
+        skepp.get_node("AreaHolder/Area2D").rotation = skepp.rotation
         skepp.boost_line.points = [Vector2(), skepp.get_boost_point()]
         skepp.emit_signal("boost", [skepp.global_position, skepp.global_position + Vector2(skepp.boost_len * skepp.boost_mag, 0).rotated(skepp.rotation)])
         skepp.boost_line.visible = true
-        var bodies = skepp.get_node("Area2D").get_overlapping_areas()
+        
+        var bodies = skepp.get_node("AreaHolder/Area2D").get_overlapping_areas()
         for body in bodies:
-            print("overlapping")
-            print(body) 
+            print("DEATH TO YOU! in the interzone")            
+            skepp.deathzone = true
+            print(body)
+            
+#        else:
+#            skepp.deathzone = false
+
         .update(skepp, delta)
 
     func exit(skepp):
+        if skepp.deathzone:
+            print("DEATH TO YOU!")
         skepp.move_and_collide(Vector2(skepp.boost_len * skepp.boost_mag, 0).rotated(skepp.rotation))
         skepp.boost_line.visible = false
         skepp.boost_line.points = []
@@ -71,6 +81,7 @@ class SkeppBoosting extends SkeppBaseState:
         skepp.boost_line_cooloff.start()
         skepp.boost_audio.play()
         skepp.emit_signal("boosted")
+
 
 #        skepp.get_node("Area2D").position = Vector2()
         
